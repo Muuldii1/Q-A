@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #asuult {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin: 5px 0;
+            transition: background-color 0.1s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            background-color: #388e3c;
+        }
+
+        .correct {
+            background-color: #4CAF50 !important;
+        }
+
+        .wrong {
+            background-color: #f44336 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Answer the Question</h1>
+        <button id="button1">START GAME</button>
+        <p id="asuult"></p>
+        <button id="hariult1"></button>
+        <button id="hariult2"></button>
+        <button id="hariult3"></button>
+        <button id="hariult4"></button>
+    </div>
+
+    <script>
+        let currentQuestionIndex = -1;
+
+        const originalQuestions = [
+            {
+                question: "1+1",
+                answer: ["2", "3", "1", "6"],
+                correctAnswer: "2"
+            },
+            {
+                question: "1+2",
+                answer: ["1", "2", "3", "4"],
+                correctAnswer: "3"
+            },
+            {
+                question: "3+2",
+                answer: ["3", "4", "5", "6"],
+                correctAnswer: "5"
+            },
+            {
+                question: "4+1",
+                answer: ["5", "6", "7", "8"],
+                correctAnswer: "5"
+            }
+        ];
+
+        let questions2 = [...originalQuestions];
+
+        document.getElementById('button1').addEventListener("click", displayQuestion);
+
+        function displayQuestion() {
+            if (questions2.length === 0) {
+                alert("All questions have been answered. Restarting the game...");
+                questions2 = [...originalQuestions];
+            }
+
+            currentQuestionIndex = Math.floor(Math.random() * questions2.length);
+
+            const question = questions2[currentQuestionIndex];
+
+            resetButtonStyles();
+
+            document.getElementById("asuult").innerHTML = question.question;
+            document.getElementById("hariult1").innerHTML = question.answer[0];
+            document.getElementById("hariult2").innerHTML = question.answer[1];
+            document.getElementById("hariult3").innerHTML = question.answer[2];
+            document.getElementById("hariult4").innerHTML = question.answer[3];
+
+            const buttons = [
+                document.getElementById("hariult1"),
+                document.getElementById("hariult2"),
+                document.getElementById("hariult3"),
+                document.getElementById("hariult4")
+            ];
+
+            buttons.forEach((button, index) => {
+                button.onclick = function () {
+                    checkAnswer(button, question.answer[index], question.correctAnswer);
+                };
+            });
+        }
+
+        function checkAnswer(button, selectedAnswer, correctAnswer) {
+            if (selectedAnswer === correctAnswer) {
+                button.classList.add("correct");
+                questions2.splice(currentQuestionIndex, 1);
+                setTimeout(displayQuestion, 300); 
+            } else {
+                button.classList.add("wrong");
+                setTimeout(displayQuestion, 300); 
+            }
+        }
+
+        function resetButtonStyles() {
+            const buttons = [
+                document.getElementById("hariult1"),
+                document.getElementById("hariult2"),
+                document.getElementById("hariult3"),
+                document.getElementById("hariult4")
+            ];
+
+            buttons.forEach(button => {
+                button.classList.remove("correct", "wrong");
+                button.style.backgroundColor = "#4CAF50";
+            });
+        }
+    </script>
+</body>
+
+</html>
